@@ -1,4 +1,13 @@
 import os
+import time
+import sys
+
+def slowtype(text, duration):
+    delay = duration / len(text) if len(text) > 0 else 0
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(delay)
+    print()
 
 class EvenOddSeparator:
     def __init__(self, source_file, even_file, odd_file):
@@ -6,6 +15,19 @@ class EvenOddSeparator:
         self.source_file = os.path.join(base, source_file)
         self.even_file = os.path.join(base, even_file)
         self.odd_file = os.path.join(base, odd_file)
+
+    def choose_mode(self):
+        print("Select input mode:")
+        print("  [1] Generate random numbers")
+        print("  [2] Manual input")
+        mode = input("Enter choice: ")
+
+        if mode == "1":
+            self.generate_numbers()
+        elif mode == "2":
+            self.manual_input()
+        else:
+            print("Invalid choice.")
  
     def separate(self):
         src = open(self.source_file, "r")
