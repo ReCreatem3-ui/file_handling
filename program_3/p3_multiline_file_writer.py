@@ -68,6 +68,18 @@ class FileWriter:
 
         f.close()
         print("Saved to", self.output_file)
+    
+    def append_lines(self):
+        f = open(self.output_file, "a")
+        more = "y"
+
+        while more.lower() == "y":
+            line = input("Enter a line: ")
+            f.write(line + "\n")
+            more = input("Add more lines? (y/n): ")
+
+        f.close()
+        print("Appended to", self.output_file)
 
     def display_contents(self):
         print(f"---{self.output_file}---")
