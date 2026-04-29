@@ -68,7 +68,7 @@ class IntroLoader:
                                                     ██║     ██║  ██║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║         ██║
                                                     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝         ╚═╝
             """)
-        self.elements.slowtype("                                                                 Even Square & Odd Cube Processor", duration=2.5)
+        self.elements.slowtype("                                                                        Even Square & Odd Cube Processor", duration=2.5)
         self.spacer.light_space()
         time.sleep(2)
 
@@ -90,18 +90,26 @@ class PowerSeparator:
                     num_count = int(input("How many numbers to generate?: "))
 
                     if range_start > range_end:
+                        self.space.clear_screen()
                         print("Range start must be less than or equal to range end.")
+                        time.sleep(1.5)
                         continue
                     if num_count < 1:
+                        self.space.clear_screen()
                         print("Number count must be at least 1.")
+                        time.sleep(1.5)
                         continue
                     if num_count > (range_end - range_start + 1):
+                        self.space.clear_screen()
                         print(f"Count exceeds available numbers. Max is {range_end - range_start + 1}.")
+                        time.sleep(1.5)
                         continue
                     break
 
                 except ValueError:
+                    self.space.clear_screen()
                     print("Invalid input! Please enter a numerical value.")
+                    time.sleep(1.5)
 
             numbers = random.sample(range(range_start, range_end + 1), num_count)
 
@@ -124,11 +132,15 @@ class PowerSeparator:
         while more.lower() == "y":
             while True:
                 try:
+                    self.space.clear_screen()
                     num = int(input("Enter a number: "))
                     numbers.append(num)
                     break
                 except ValueError:
+                    self.space.clear_screen()
                     print("Invalid input! Please enter a whole number.")
+                    time.sleep(1.5)
+            self.space.clear_screen()
             more = input("Add more? (y/n): ")
 
         f = open(self.source_file, "w")
@@ -174,14 +186,18 @@ class PowerSeparator:
         f.close()
 
         print("--- Square of Even Numbers ---")
-        print("Numbers used: ", ", ".join(str(n) for n in even_nums))
-        print("Results:      ", ", ".join(str(n) for n in even_results))
+        print("Numbers used: ", end = "", flush = True)
+        self.element.slowtype(", ".join(str(n) for n in even_nums), duration=2)
+        print("Results: ", end = "", flush = True)
+        self.element.slowtype(", ".join(str(n) for n in even_results), duration=2)
 
         print()
 
         print("--- Cube of Odd Numbers ---")
-        print("Numbers used: ", ", ".join(str(n) for n in odd_nums))
-        print("Results:      ", ", ".join(str(n) for n in odd_results))
+        print("Numbers used: ", end = "", flush = True)
+        self.element.slowtype(", ".join(str(n) for n in odd_nums), duration=2)
+        print("Results: ", end = "", flush = True)
+        self.element.slowtype(", ".join(str(n) for n in odd_results), duration=2)
 
 class SelectMenu:
     def __init__(self):
@@ -204,6 +220,7 @@ class SelectMenu:
             elif choice == "2":
                 return "menu"
             elif choice == "3":
+                self.space.clear_screen()
                 self.element.loading_bar("Processing results ")
                 return "proceed"
             elif choice == "4":
@@ -214,6 +231,61 @@ class SelectMenu:
                 print("Invalid choice. Enter 1, 2, 3, or 4 only.")
                 time.sleep(1)
 
-processor = PowerSeparator("integers.txt", "double.txt", "triple.txt")
-processor.process()
-processor.display_results()
+    def run(self):
+            while True:
+                self.space.clear_screen()
+                print("Select input mode:")
+                print("  [1] Generate random numbers")
+                print("  [2] Manual input")
+                print("  [3] Use built-in integers.txt")
+                print("  [4] Exit")
+                mode = input("Enter choice: ")
+
+                if mode == "1":
+                    self.element.loading_bar("Loading number generator ")
+                    self.processor.generate_numbers()
+                    result = self.post_action()
+                    if result == "retry":
+                        self.processor.generate_numbers()
+                        continue
+                    elif result == "menu":
+                        continue
+                    break
+
+                elif mode == "2":
+                    self.element.loading_bar("Loading manual input ")
+                    self.processor.manual_input()
+                    result = self.post_action()
+                    if result == "retry":
+                        self.processor.manual_input()
+                        continue
+                    elif result == "menu":
+                        continue
+                    break
+
+                elif mode == "3":
+                    self.space.clear_screen()
+                    confirm = input("Proceed with existing integers.txt? (y/n): ")
+                    if confirm.lower() == "y":
+                        self.element.loading_bar("Loading built-in numbers ")
+                        break
+                    else:
+                        continue
+
+                elif mode == "4":
+                    self.space.clear_screen()
+                    self.element.loading_bar("Exiting ")
+                    exit()
+                else:
+                    self.space.clear_screen()
+                    print("Invalid choice. Enter 1, 2, 3, or 4 only.")
+                    time.sleep(1)
+
+            self.processor.process()
+            self.space.clear_screen()
+            self.processor.display_results()
+
+introduction = IntroLoader()
+introduction.intro()
+menu = SelectMenu()
+menu.run()
