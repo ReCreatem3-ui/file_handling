@@ -17,10 +17,26 @@ class EvenOddSeparator:
         self.odd_file = os.path.join(base, odd_file)
     
     def generate_numbers(self):
-        range_start = int(input("Enter range start: "))
-        range_end = int(input("Enter range end: "))
-        num_count = int(input("How many numbers to generate?: "))
+        while True:
+            try:
+                range_start = int(input("Enter range start: "))
+                range_end = int(input("Enter range end: "))
+                num_count = int(input("How many numbers to generate?: "))
 
+                if range_start > range_end:
+                    print("Range start must be less than or equal to range end.")
+                    continue
+                if num_count < 1:
+                    print("Number count must be at least 1.")
+                    continue
+                if num_count > (range_end - range_start + 1):
+                    print(f"Count exceeds available numbers in range. Max is {range_end - range_start + 1}.")
+                    continue
+                break
+
+            except ValueError:
+                print("Invalid input! Please enter a numerical value.")
+        
         numbers = random.sample(range(range_start, range_end + 1), num_count)
 
         f = open(self.source_file, "w")
@@ -35,9 +51,14 @@ class EvenOddSeparator:
         more = "y"
 
         while more.lower() == "y":
-            num = input("Enter a number: ")
-            f.write(num + "\n")
-            more = input("Add more? (y/n)")
+            while True:
+                try: 
+                    num = input("Enter a number: ")
+                    f.write(num + "\n")
+                    break
+                except ValueError:
+                    print("Invalid input! Please enter a whole value.")
+            more = input("Add more? (y/n): ")
         
         f.close()
 
