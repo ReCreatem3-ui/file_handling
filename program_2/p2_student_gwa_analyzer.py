@@ -100,6 +100,45 @@ class GWAFinder:
         self._display_results()
         self._post_action_menu()
 
+    def _save_to_file(self):
+        f = open(self.source_file, "w")
+        for name, gwa in self.students:
+            f.write(f"{name},{gwa:.2f}\n")
+        f.close()
+        
+    def load_from_file(self):
+        self.spacer.clear_screen()
+        loading_bar("Loading from file ")
+
+        if not os.path.exists(self.source_file):
+            self.spacer.light_space()
+            print("File not found:", self.source_file)
+            self.spacer.light_space()
+            time.sleep(2)
+            self._post_action_menu()
+            return
+
+        self.students = []
+        f = open(self.source_file, "r")
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(",")
+            if len(parts) == 2:
+                name = parts[0]
+                gwa = float(parts[1])
+                self.students.append((name, gwa))
+        f.close()
+
+        self.spacer.light_space()
+        print(f"Loaded {len(self.students)} student(s) from file.")
+        time.sleep(2)
+
+        self.find_highest()
+        self._display_results()
+        self._post_action_menu()
+
     def find_highest(self):
         f = open(self.source_file, "r")
 
