@@ -1,4 +1,76 @@
 import os
+import time
+import sys
+import random
+
+class Spacer:
+    def __init__(self):
+        pass
+
+    def one_space(self):
+        print()
+
+    def light_space(self):
+        for i in range(2):
+            print()
+
+    def medium_space(self):
+        for i in range(3):
+            print()
+
+    def heavy_space(self):
+        for i in range(5):
+            print()
+
+    def clear_screen(self):
+        for i in range(35):
+            print()
+
+    def custom_space(self, lines=1):
+        for i in range(lines):
+            print()
+
+    def line_separator(self):
+        print("-" * 50)
+
+    def equals_separator(self):
+        print("=" * 50)
+
+class Elements:
+    def loading_bar(self, label="", total=26, duration=2):
+        for i in range(total + 1):
+            bar = '▄' * i + ' ' * (total - i)
+            percent = int((i / total) * 100)
+            sys.stdout.write(f'\r{label}{bar} {percent}%')
+            sys.stdout.flush()
+            time.sleep(duration / total)
+        print()
+
+    def slowtype(self, text, duration):
+        delay = duration / len(text) if len(text) > 0 else 0
+        for char in text:
+            print(char, end='', flush=True)
+            time.sleep(delay)
+        print()
+
+class IntroLoader:
+    def __init__(self):
+        self.spacer = Spacer()
+        self.elements = Elements()
+
+    def intro(self):
+        self.spacer.clear_screen()
+        print("""
+                                                    ██████╗ ██████╗  ██████╗  ██████╗ ██████╗  █████╗ ███╗   ███╗    ██╗  ██╗
+                                                    ██╔══██╗██╔══██╗██╔═══██╗██╔════╝ ██╔══██╗██╔══██╗████╗ ████║    ██║  ██║
+                                                    ██████╔╝██████╔╝██║   ██║██║  ███╗██████╔╝███████║██╔████╔██║    ███████║
+                                                    ██╔═══╝ ██╔══██╗██║   ██║██║   ██║██╔══██╗██╔══██║██║╚██╔╝██║    ╚════██║
+                                                    ██║     ██║  ██║╚██████╔╝╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║         ██║
+                                                    ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝         ╚═╝
+            """)
+        self.elements.slowtype("                                                                 Even Square & Odd Cube Processor", duration=2.5)
+        self.spacer.light_space()
+        time.sleep(2)
 
 class PowerSeparator:
     def __init__(self, source_file, double_file, triple_file):
@@ -6,6 +78,69 @@ class PowerSeparator:
         self.source_file = os.path.join(base, source_file)
         self.double_file = os.path.join(base, double_file)
         self.triple_file = os.path.join(base, triple_file)
+        self.space = Spacer()
+        self.element = Elements()
+
+    def generate_numbers(self):
+            while True:
+                try:
+                    self.space.clear_screen()
+                    range_start = int(input("Enter range start: "))
+                    range_end = int(input("Enter range end: "))
+                    num_count = int(input("How many numbers to generate?: "))
+
+                    if range_start > range_end:
+                        print("Range start must be less than or equal to range end.")
+                        continue
+                    if num_count < 1:
+                        print("Number count must be at least 1.")
+                        continue
+                    if num_count > (range_end - range_start + 1):
+                        print(f"Count exceeds available numbers. Max is {range_end - range_start + 1}.")
+                        continue
+                    break
+
+                except ValueError:
+                    print("Invalid input! Please enter a numerical value.")
+
+            numbers = random.sample(range(range_start, range_end + 1), num_count)
+
+            f = open(self.source_file, "w")
+            for num in numbers:
+                f.write(str(num) + "\n")
+            f.close()
+
+            self.space.clear_screen()
+            print("Generated:")
+            self.element.slowtype(", ".join(str(n) for n in numbers), duration=3)
+            self.space.light_space()
+            time.sleep(2)
+
+    def manual_input(self):
+        numbers = []
+        more = "y"
+
+        self.space.clear_screen()
+        while more.lower() == "y":
+            while True:
+                try:
+                    num = int(input("Enter a number: "))
+                    numbers.append(num)
+                    break
+                except ValueError:
+                    print("Invalid input! Please enter a whole number.")
+            more = input("Add more? (y/n): ")
+
+        f = open(self.source_file, "w")
+        for num in numbers:
+            f.write(str(num) + "\n")
+        f.close()
+
+        self.space.clear_screen()
+        print("You entered:")
+        print(", ".join(str(n) for n in numbers))
+        self.space.light_space()
+        time.sleep(2)
 
     def process(self):
         src = open(self.source_file, "r")
