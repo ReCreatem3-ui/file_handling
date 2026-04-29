@@ -24,15 +24,29 @@ class PowerSeparator:
         cube.close
     
     def display_results(self):
-        print("--- Square of Even Numbers ---")
         f = open(self.double_file, "r")
-        print(f.read())
-        f.close
+        even_results = sorted([int(line.strip()) for line in f])
+        f.close()
+
+        f = open(self.source_file, "r")
+        all_nums = [int(line.strip()) for line in f]
+        f.close()
+        even_nums = sorted([n for n in all_nums if n % 2 == 0])
+        odd_nums = sorted([n for n in all_nums if n % 2 != 0])
+
+        f = open(self.triple_file, "r")
+        odd_results = sorted([int(line.strip()) for line in f])
+        f.close()
+
+        print("--- Square of Even Numbers ---")
+        print("Numbers used: ", ", ".join(str(n) for n in even_nums))
+        print("Results:      ", ", ".join(str(n) for n in even_results))
+
+        print()
 
         print("--- Cube of Odd Numbers ---")
-        f = open(self.triple_file, "r")
-        print(f.read())
-        f.close
+        print("Numbers used: ", ", ".join(str(n) for n in odd_nums))
+        print("Results:      ", ", ".join(str(n) for n in odd_results))
 
 processor = PowerSeparator("integers.txt", "double.txt", "triple.txt")
 processor.process()
