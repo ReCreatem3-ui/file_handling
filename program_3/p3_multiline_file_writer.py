@@ -87,6 +87,49 @@ class FileWriter:
         print(f.read())
         f.close()
 
+class SelectMenu:
+    while True:
+        print("Select mode:")
+        print("  [1] Create new file")
+        print("  [2] Open existing file")
+        print("  [3] Exit")
+        mode = input("Enter choice: ")
+
+        if mode == "1":
+            filename = input("Enter new filename (e.g. mylife.txt): ")
+            writer = FileWriter(filename)
+            writer.write_lines()
+            writer.display_contents()
+            break
+
+        elif mode == "2":
+            filename = input("Enter existing filename (e.g. mylife.txt): ")
+            writer = FileWriter(filename)
+
+            if not os.path.exists(writer.output_file):
+                print(f"File '{filename}' not found. Try again.")
+                continue
+
+            print("\nFile found. What do you want to do?")
+            print("  [1] Read only")
+            print("  [2] Append new lines")
+            action = input("Enter choice: ")
+
+            if action == "1":
+                writer.display_contents()
+            elif action == "2":
+                writer.display_contents()
+                writer.append_lines()
+                writer.display_contents()
+            break
+
+        elif mode == "3":
+            print("Exiting.")
+            break
+        else:
+            print("Invalid choice. Enter 1, 2, or 3 only.")
+
+selection = SelectMenu()
 filename = input("Enter output filename: ")
 writer = FileWriter(filename)
 writer.write_lines()
