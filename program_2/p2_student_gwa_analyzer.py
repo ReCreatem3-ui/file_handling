@@ -22,7 +22,7 @@ class Spacer:
             print()
 
     def clear_screen(self):
-        for i in range(25):
+        for i in range(35):
             print()
 
     def custom_space(self, lines=1):
@@ -35,22 +35,21 @@ class Spacer:
     def equals_separator(self):
         print("=" * 50)
 
-def slowtype(text, duration):
-    delay = duration / len(text) if len(text) > 0 else 0
-    for char in text:
-        print(char, end='', flush=True)
-        time.sleep(delay)
-    print()
-
-class LoadingBar:
-    @staticmethod
-    def loading_bar(label="", total=26, duration=2):
+class Elements:
+    def loading_bar(self, label="", total=26, duration=2):
         for i in range(total + 1):
             bar = '▄' * i + ' ' * (total - i)
             percent = int((i / total) * 100)
             sys.stdout.write(f'\r{label}{bar} {percent}%')
             sys.stdout.flush()
             time.sleep(duration / total)
+        print()
+    
+    def slowtype(self, text, duration):
+        delay = duration / len(text) if len(text) > 0 else 0
+        for char in text:
+            print(char, end='', flush=True)
+            time.sleep(delay)
         print()
 
 class GWAFinder:
@@ -61,7 +60,7 @@ class GWAFinder:
         self.top_name = ""
         self.top_gwa = float("inf")
         self.spacer = Spacer()
-        self.loading_bar = LoadingBar()
+        self.element = Elements()
 
     def validate_gwa(self, value):
         try:
@@ -76,7 +75,7 @@ class GWAFinder:
         
     def add_new_student(self):
         self.spacer.clear_screen()
-        LoadingBar.loading_bar("Loading input mode ")
+        self.element.loading_bar("Loading input mode ")
         self.spacer.light_space()
 
         more = "y"
@@ -103,7 +102,7 @@ class GWAFinder:
         self.spacer.clear_screen()
         save = input("Save students to file? (y/n): ")
         if save.lower() == "y":
-            LoadingBar.loading_bar("Saving ")
+            self.element.loading_bar("Saving ")
             self.save_to_file()
             self.spacer.light_space()
             print("Students saved successfully.")
@@ -124,7 +123,7 @@ class GWAFinder:
         
     def load_from_file(self):
         self.spacer.clear_screen()
-        LoadingBar.loading_bar("Loading from file ")
+        self.element.loading_bar("Loading from file ")
         self.spacer.light_space()
 
         if not os.path.exists(self.source_file):
@@ -188,11 +187,11 @@ class GWAFinder:
         time.sleep(5)
 
         self.spacer.clear_screen()
-        slowtype("Student with the Highest GWA:", duration=2)
+        self.element.slowtype("Student with the Highest GWA:", duration=2)
         time.sleep(1)
         self.spacer.equals_separator()
-        slowtype(f"  Name : {self.top_name}", duration=2)
-        slowtype(f"  GWA  : {self.top_gwa:.2f}", duration=2)
+        self.element.slowtype(f"  Name : {self.top_name}", duration=2)
+        self.element.slowtype(f"  GWA  : {self.top_gwa:.2f}", duration=2)
         self.spacer.equals_separator()
         time.sleep(5)
 
@@ -210,10 +209,9 @@ class GWAFinder:
                 return
             elif choice == "2":
                 self.spacer.clear_screen()
-                self.loading_bar.loading_bar("Saving ")
+                self.element.loading_bar("Saving ")
                 self.save_to_file()
                 self.spacer.clear_screen()
-                print("Thank you for using the GWA Analyzer!")
                 self.spacer.light_space()
                 exit()
             else:
@@ -238,7 +236,7 @@ class GWAFinder:
                 self.load_from_file()
             elif choice == "3":
                 self.spacer.clear_screen()
-                self.loading_bar.loading_bar("Exiting ")
+                self.element.loading_bar("Exiting ")
                 self.spacer.clear_screen()
                 exit()
             else:
