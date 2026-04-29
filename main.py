@@ -1,6 +1,7 @@
 import os
 import time
 import sys
+import subprocess
 
 class Spacer:
     def __init__(self):
@@ -70,7 +71,7 @@ class IntroOutroLoader:
         self.elements.slowtype("                                                                     Welcome to ReCreatem3's file handling programs", duration=2.5)
         self.spacer.light_space()
         time.sleep(2)
-    
+
     def outro(self):
         self.spacer.clear_screen()
         print("""
@@ -87,6 +88,70 @@ class IntroOutroLoader:
             """)
         time.sleep(2)
 
+class Launcher:
+    def __init__(self):
+        self.space = Spacer()
+        self.element = Elements()
+        self.base = os.path.dirname(os.path.abspath(__file__))
+        self.programs = {
+            "1": {
+                "label": "P1 - Even and Odd File Separator",
+                "path": os.path.join(self.base, "P1-EvenOddSeparator", "p1_even_odd_file_separator.py")
+            },
+            "2": {
+                "label": "P2 - Student GWA Analyzer",
+                "path": os.path.join(self.base, "P2-StudentGWAAnalyzer", "p2_student_gwa_analyzer.py")
+            },
+            "3": {
+                "label": "P3 - Multiline File Writer",
+                "path": os.path.join(self.base, "P3-MultilineFileWriter", "p3_multiline_file_writer.py")
+            },
+            "4": {
+                "label": "P4 - Even Square & Odd Cube Processor",
+                "path": os.path.join(self.base, "P4-EvenSquareOddCube", "p4_even_square_odd_cube_processor.py")
+            },
+        }
+
+    def launch(self, key):
+        program = self.programs[key]
+        path = program["path"]
+
+        if not os.path.exists(path):
+            self.space.clear_screen()
+            print(f"File not found: {path}")
+            print("Make sure your folder structure matches the expected layout.")
+            time.sleep(3)
+            return
+
+        self.space.clear_screen()
+        self.element.loading_bar(f"Launching {program['label']} ")
+        self.space.clear_screen()
+        subprocess.run([sys.executable, path])
+
+    def run(self):
+        while True:
+            self.space.clear_screen()
+            self.space.equals_separator()
+            print("Select a program to launch:")
+            self.space.equals_separator()
+            for key, prog in self.programs.items():
+                print(f"  [{key}] {prog['label']}")
+            print("  [5] Exit")
+            self.space.equals_separator()
+            choice = input("Enter choice: ")
+
+            if choice in self.programs:
+                self.launch(choice)
+            elif choice == "5":
+                break
+            else:
+                print("Invalid choice. Enter 1, 2, 3, 4, or 5 only.")
+                time.sleep(1)
+
+
 impression = IntroOutroLoader()
+launcher = Launcher()
+
 impression.intro()
+launcher.run()
 impression.outro()
