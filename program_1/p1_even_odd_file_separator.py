@@ -53,8 +53,8 @@ class EvenOddSeparator:
         while more.lower() == "y":
             while True:
                 try: 
-                    num = input("Enter a number: ")
-                    f.write(num + "\n")
+                    num = int(input("Enter a number: "))
+                    f.write(str(num) + "\n")
                     break
                 except ValueError:
                     print("Invalid input! Please enter a whole value.")
@@ -63,17 +63,28 @@ class EvenOddSeparator:
         f.close()
 
     def choose_mode(self):
-        print("Select input mode:")
-        print("  [1] Generate random numbers")
-        print("  [2] Manual input")
-        mode = input("Enter choice: ")
+        while True:
+            print("Select input mode:")
+            print("  [1] Generate random numbers")
+            print("  [2] Manual input")
+            print("  [3] Use built-in numbers (numbers.txt)")
+            print("  [4] Exit")
+            mode = input("Enter choice: ")
 
-        if mode == "1":
-            self.generate_numbers()
-        elif mode == "2":
-            self.manual_input()
-        else:
-            print("Invalid choice.")
+            if mode == "1":
+                self.generate_numbers()
+                break
+            elif mode == "2":
+                self.manual_input()
+                break
+            elif mode == "3":
+                break
+            elif mode == "4":
+                print("Exiting...")
+                exit()
+            else:
+                print("Invalid choice")
+
     
     def separate(self):
         src = open(self.source_file, "r")
