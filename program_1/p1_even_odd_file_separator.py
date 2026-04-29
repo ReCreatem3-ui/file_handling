@@ -30,6 +30,12 @@ class Spacer:
         for i in range(25):
             print()
 
+    def line_separator(self):
+        print("-" * 50)
+
+    def equals_separator(self):
+        print("=" * 50)
+
 class Elements:
     def slowtype(self, text, duration):
         delay = duration / len(text) if len(text) > 0 else 0
@@ -63,7 +69,6 @@ class IntroLoader:
                                                     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝
             """)
         self.elements.slowtype("                                                                       Even and Odd Number Separator", duration=2.5)
-        self.spacer.light_space()
         time.sleep(2)
     
 
@@ -141,10 +146,12 @@ class EvenOddSeparator:
         while True:
             self.spacer.clear_screen()
             print("Select input mode:")
+            self.spacer.equals_separator()
             print("  [1] Generate random numbers")
             print("  [2] Manual input")
             print("  [3] View/Overwrite built-in numbers (numbers.txt)")
             print("  [4] Exit")
+            self.spacer.equals_separator()
             mode = input("Enter choice: ")
 
             if mode == "1":
@@ -176,10 +183,12 @@ class EvenOddSeparator:
 
             if mode in ("1", "2", "3"):
                 self.spacer.clear_screen()
+                self.spacer.line_separator()
                 print("\nWhat do you want to do next?")
                 print("  [1] Try again")
                 print("  [2] Back to input mode menu")
                 print("  [3] Finalize and process results")
+                self.spacer.line_separator()
                 after = input("Enter choice: ")
 
                 if after == "1":
