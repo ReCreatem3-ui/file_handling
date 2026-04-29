@@ -3,6 +3,32 @@ import time
 import random
 import sys
 
+class Spacer:
+    def __init__(self):
+        pass
+
+    def light_space(self):
+        for i in range(2):
+            print()
+
+    def medium_space(self):
+        for i in range(3):
+            print()
+
+    def heavy_space(self):
+        for i in range(5):
+            print()
+
+    def custom_space(self, lines=1):
+        for i in range(lines):
+            print()
+
+    def line_separator(self):
+        print("-" * 50)
+
+    def equals_separator(self):
+        print("=" * 50)
+
 def slowtype(text, duration):
     delay = duration / len(text) if len(text) > 0 else 0
     for char in text:
@@ -25,6 +51,7 @@ class EvenOddSeparator:
         self.source_file = os.path.join(base, source_file)
         self.even_file = os.path.join(base, even_file)
         self.odd_file = os.path.join(base, odd_file)
+        self.spacer = Spacer()
 
     def generate_numbers(self):
         while True:
@@ -54,11 +81,12 @@ class EvenOddSeparator:
             f.write(str(num) + "\n")
         f.close()
 
+        self.spacer.light_space()
         print("Generated:", ", ".join(str(n) for n in numbers))
 
     def manual_input(self):
         numbers = []
-        more = "y"  # ← ADD THIS BACK
+        more = "y"
 
         while more.lower() == "y":
             while True:
@@ -75,18 +103,19 @@ class EvenOddSeparator:
             f.write(str(num) + "\n")
         f.close()
 
-        print("Entered:", ", ".join(str(n) for n in numbers))
-
-        print("Entered:", ", ".join(str(n) for n in numbers))  # ← ADDED: Preview output
-        
+        self.spacer.light_space()
+        print("You Entered:", ", ".join(str(n) for n in numbers))
 
     def choose_mode(self):
         while True:
+            self.spacer.medium_space()
+            self.spacer.equals_separator()
             print("Select input mode:")
             print("  [1] Generate random numbers")
             print("  [2] Manual input")
             print("  [3] View/Overwrite built-in numbers (numbers.txt)")
             print("  [4] Exit")
+            self.spacer.equals_separator()
             mode = input("Enter choice: ")
 
             if mode == "1":
@@ -94,13 +123,15 @@ class EvenOddSeparator:
                 self.generate_numbers()
             elif mode == "2":
                 loading_bar("Loading manual input mode ")
-                self.manual_input()
+                self.generate_numbers()
             elif mode == "3":
-                print("\nUsing built-in numbers.txt as input.")
+                self.spacer.light_space()
+                print("Using built-in numbers.txt as input.")
                 print("Warning! If you proceed, the current numbers.txt will be used and results will be overwritten.")
                 confirm = input("Are you sure you want to proceed? (y/n): ")
                 if confirm.lower() == "y":
                     loading_bar("Loading built-in numbers ")
+                    self.spacer.light_space()
                     mode = "3"
                 else:
                     continue
@@ -112,10 +143,13 @@ class EvenOddSeparator:
                 continue
 
             if mode in ("1", "2", "3"):
-                print("\nWhat do you want to do next?")
+                self.spacer.light_space()
+                self.spacer.line_separator()
+                print("What do you want to do next?")
                 print("  [1] Try again")
                 print("  [2] Back to input mode menu")
                 print("  [3] Finalize and process results")
+                self.spacer.line_separator()
                 after = input("Enter choice: ")
 
                 if after == "1":
@@ -124,11 +158,13 @@ class EvenOddSeparator:
                     elif mode == "2":
                         self.manual_input()
                     loading_bar("Processing results ")
+                    self.spacer.light_space()
                     break
                 elif after == "2":
                     continue
                 elif after == "3":
                     loading_bar("Finalizing results ")
+                    self.spacer.light_space()
                     break
 
     def separate(self):
@@ -148,15 +184,19 @@ class EvenOddSeparator:
         odd.close()
 
     def display_results(self):
+        self.spacer.medium_space()
+        self.spacer.equals_separator()
         f = open(self.even_file, "r")
         even_nums = sorted([int(line.strip()) for line in f])
         f.close()
         print("Even numbers:", ", ".join(str(n) for n in even_nums))
 
+        self.spacer.light_space()
         f = open(self.odd_file, "r")
         odd_nums = sorted([int(line.strip()) for line in f])
         f.close()
         print("Odd numbers:", ", ".join(str(n) for n in odd_nums))
+        self.spacer.equals_separator()
 
 
 separator = EvenOddSeparator("numbers.txt", "even.txt", "odd.txt")
