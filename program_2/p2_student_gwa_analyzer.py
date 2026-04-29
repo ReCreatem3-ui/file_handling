@@ -151,10 +151,30 @@ class GWAFinder:
                 self.top_name = name
         f.close()
  
-    def display_result(self):
+    def _display_results(self):
+        self.spacer.clear_screen()
+        self.spacer.equals_separator()
+        print("Student List:")
+        self.spacer.equals_separator()
+
+        if not self.students:
+            print("No students loaded.")
+            self.spacer.equals_separator()
+            return
+
+        sorted_students = sorted(self.students, key=lambda x: x[1])
+        for name, gwa in sorted_students:
+            if name == self.top_name:
+                print(f"  {name:<30} {gwa:.2f}  ← HIGHEST GWA")
+            else:
+                print(f"  {name:<30} {gwa:.2f}")
+
+        self.spacer.equals_separator()
+        self.spacer.light_space()
         print("Student with the Highest GWA:")
-        print(f"  Name : {self.top_name}")
-        print(f"  GWA  : {self.top_gwa}")
+        slowtype(f"  Name : {self.top_name}", duration=2)
+        slowtype(f"  GWA  : {self.top_gwa:.2f}", duration=2)
+        self.spacer.equals_separator()
  
  
 finder = GWAFinder("students_with_gwa.txt")
