@@ -69,7 +69,6 @@ class IntroLoader:
                                                     ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝         ╚═╝
             """)
         self.elements.slowtype("                                                                        Even Square & Odd Cube Processor", duration=2.5)
-        self.spacer.light_space()
         time.sleep(2)
 
 class PowerSeparator:
@@ -209,10 +208,12 @@ class SelectMenu:
         while True:
             self.space.clear_screen()
             print("What do you want to do next?")
+            self.space.line_separator()
             print("  [1] Try again")
             print("  [2] Return to menu")
             print("  [3] Proceed to results")
             print("  [4] Exit")
+            self.space.line_separator()
             choice = input("Enter choice: ")
 
             if choice == "1":
@@ -235,13 +236,16 @@ class SelectMenu:
             while True:
                 self.space.clear_screen()
                 print("Select input mode:")
+                self.space.equals_separator()
                 print("  [1] Generate random numbers")
                 print("  [2] Manual input")
                 print("  [3] Use built-in integers.txt")
                 print("  [4] Exit")
+                self.space.equals_separator()
                 mode = input("Enter choice: ")
 
                 if mode == "1":
+                    self.space.clear_screen()
                     self.element.loading_bar("Loading number generator ")
                     self.processor.generate_numbers()
                     result = self.post_action()
@@ -253,6 +257,7 @@ class SelectMenu:
                     break
 
                 elif mode == "2":
+                    self.space.clear_screen()
                     self.element.loading_bar("Loading manual input ")
                     self.processor.manual_input()
                     result = self.post_action()
@@ -267,6 +272,7 @@ class SelectMenu:
                     self.space.clear_screen()
                     confirm = input("Proceed with existing integers.txt? (y/n): ")
                     if confirm.lower() == "y":
+                        self.space.clear_screen()
                         self.element.loading_bar("Loading built-in numbers ")
                         break
                     else:
